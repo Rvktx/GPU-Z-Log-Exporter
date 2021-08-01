@@ -21,12 +21,13 @@ Unpack release in your target folder, make shortcut to the **exporter.pyw** file
 
 You can add an **.env** file to target folder to change some global variables:  
 
-ENV variable    | Description                                                                   | Default value
-------------    | -------------                                                                 | -------------
-PORT            | Port on which the exporter will be listening.                                 | 7777
-MAX_SIZE        | Maximal size of the log file before restarting.                               | 10_000_000
-FILE_PATH       | Path of your GPU-Z log file. Make sure you have write permissions.            | "GPU-Z Sensor Log.txt"
-GPUZ_PATH       | Path of the **RunGPU-Z.exe** file in case you want it in different location.  | "RunGPU-Z.exe"
+ENV variable    | Description                                                                                           | Default value
+------------    | -------------                                                                                         | -------------
+PORT            | Port on which the exporter will be listening.                                                         | 7777
+MAX_SIZE        | Maximal size of the log file before restarting.                                                       | 1_200_000_000
+FILE_PATH       | Path of your GPU-Z log file. Make sure you have write permissions.                                    | "GPU-Z Sensor Log.txt"
+GPUZ_PATH       | Path of the **RunGPU-Z.exe** file in case you want it in different location.                          | "RunGPU-Z.exe"
+RESRT_TIME      | Time of the daily log file reset in %H:%M:%S format (not required, does not happen if not specified)  | None
     
 You shoud have your GPU-Z installed in default location for now.
 

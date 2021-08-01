@@ -1,5 +1,7 @@
+import datetime
 import os
 import subprocess
+import tailer
 import time
 
 from dotenv import load_dotenv
@@ -16,9 +18,7 @@ def reset_file():
 
 def get_header_data():
     print('Searching for metrics in file header.')
-    with open(STATS_FILE_PATH, 'r') as f:
-        header = f.readlines()[0]
-
+    header = tailer.head(open(STATS_FILE_PATH), 1)[0]
     header_elements = [element.strip() for element in header.split(',')[1:-1]]
     print('Found {} metrics.'.format(len(header_elements)))
     return header_elements
@@ -26,12 +26,12 @@ def get_header_data():
 
 def get_data():
     print('Getting data.')
-    with open(STATS_FILE_PATH, 'r') as f:
-        content = f.readlines()[-1]
+    content = tailer.tail(open(STATS_FILE_PATH), 2)[1]
 
-    if os.path.getsize(STATS_FILE_PATH) > MAX_FILE_SIZE:
+    if (os.path.getsize(STATS_FILE_PATH) > MAX_FILE_SIZE
+            or RESET_TIME is not None and datetime.datetime.now().strftime('%H:%M:%S') == RESET_TIME):
         reset_file()
-    
+
     stats = [stat.strip() for stat in content.split(',')[1:-1]]
     return stats
 
@@ -99,10 +99,11 @@ if __name__ == '__main__':
     load_dotenv()
     PORT = int(os.getenv('PORT', 7777))
     STATS_FILE_PATH = os.getenv('FILE_PATH', 'GPU-Z Sensor Log.txt')
-    MAX_FILE_SIZE = int(os.getenv('MAX_SIZE', 10_000_000))
+    MAX_FILE_SIZE = int(os.getenv('MAX_SIZE', 1_200_000_000))
     GPUZ_EXEC_PATH = os.getenv('GPUZ_PATH', 'RunGPU-Z.exe')
+    RESET_TIME = os.getenv('RESET_TIME', None)
 
     head_metrics = get_header_data()
     start_exporter()
     while True:
-        time.sleep(5)
+        time.sleep(1)

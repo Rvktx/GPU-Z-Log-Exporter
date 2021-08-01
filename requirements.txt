@@ -1,2 +1,3 @@
 python-dotenv>=0.15.0
 prometheus_client>=0.9.0
+tailer>=0.4.1
